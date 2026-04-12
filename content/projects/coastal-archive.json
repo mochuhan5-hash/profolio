@@ -1,0 +1,45 @@
+{
+  "slug": "coastal-archive",
+  "title": "海岸档案馆",
+  "subtitle": "以地景叙事重构海边公共文化体验",
+  "year": "2026",
+  "category": "空间 / 展陈",
+  "summary": "一个将展览、阅读与临海漫步结合的公共空间提案，强调路径、风与材料的节奏感。",
+  "overview": "项目以海岸线的移动体验为线索，将建筑空间拆解为一系列缓慢展开的观看场景。首层开放给城市，二层承载档案与阅读，屋顶作为面向海风的公共平台。",
+  "cover": {
+    "label": "Archive",
+    "image": "/projects/coastal-archive/cover.svg",
+    "accent": "#d7d0c4"
+  },
+  "details": [
+    {
+      "title": "项目背景",
+      "body": "场地位于海岸缓坡与城市道路交界处，周边缺少能够承载慢节奏停留的公共文化空间。设计希望把海边的观看经验转译为空间序列。"
+    },
+    {
+      "title": "我的角色",
+      "body": "负责概念生成、空间叙事、流线组织与最终视觉表达，重点关注从封闭展厅到开放平台的体验递进。"
+    },
+    {
+      "title": "设计策略",
+      "body": "以‘压缩—释放’的方式组织空间：入口尺度低且内向，随后逐步打开视野，最终将视线引向海面与天空。"
+    }
+  ],
+  "gallery": [
+    {
+      "title": "总平与场地关系",
+      "description": "建筑沿地势展开，保留通往海边的公共步行界面。",
+      "image": "/projects/coastal-archive/gallery-01.svg"
+    },
+    {
+      "title": "展厅内部氛围",
+      "description": "通过低饱和材料与可控天光塑造静态阅读体验。",
+      "image": "/projects/coastal-archive/gallery-02.svg"
+    },
+    {
+      "title": "屋顶平台",
+      "description": "屋顶作为公共观景平台，与风景形成最直接的连接。",
+      "image": "/projects/coastal-archive/gallery-03.svg"
+    }
+  ]
+}

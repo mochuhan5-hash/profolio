@@ -1,0 +1,40 @@
+{
+  "slug": "garden-dialogue",
+  "title": "庭院对话",
+  "subtitle": "把植物、路径与停留界面编织成一段缓慢体验",
+  "year": "2023",
+  "category": "景观 / 叙事",
+  "summary": "通过层层递进的庭院空间，构建从街道噪音到安静内部的情绪过渡。",
+  "overview": "项目关注日常尺度下的身体感知，以植物层次、光影边界与坐凳布局建立一种柔和而可停留的公共气氛。",
+  "cover": {
+    "label": "Garden",
+    "image": "/projects/garden-dialogue/cover.svg",
+    "accent": "#d6ded0"
+  },
+  "details": [
+    {
+      "title": "设计目标",
+      "body": "在有限尺度内建立清晰又不生硬的空间层次，使人从经过转变为停留。"
+    },
+    {
+      "title": "材料语言",
+      "body": "以石材、浅色混凝土与低矮种植形成安静基底，让植物成为季节变化的主要表达。"
+    },
+    {
+      "title": "体验结果",
+      "body": "最终空间更像一段被放慢的路径，让短暂停留也能拥有明确的氛围感。"
+    }
+  ],
+  "gallery": [
+    {
+      "title": "入口庭院",
+      "description": "植物和矮墙共同塑造进入时的收束感。",
+      "image": "/projects/garden-dialogue/gallery-01.svg"
+    },
+    {
+      "title": "停留节点",
+      "description": "通过坐凳与树荫形成安静的阅读与交谈区域。",
+      "image": "/projects/garden-dialogue/gallery-02.svg"
+    }
+  ]
+}

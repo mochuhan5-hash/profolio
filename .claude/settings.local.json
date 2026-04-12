@@ -1,0 +1,48 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(using-superpowers)",
+      "Skill(using-superpowers:*)",
+      "Skill(systematic-debugging)",
+      "Skill(systematic-debugging:*)",
+      "Skill(test-driven-development)",
+      "Skill(test-driven-development:*)",
+      "Skill(brainstorming)",
+      "Skill(brainstorming:*)",
+      "Bash(npm install -D vitest)",
+      "Bash(npx vitest run src/data/projects.test.ts --reporter=verbose)",
+      "Bash(node -e \"import\\(''vitest''\\).then\\(m=>console.log\\(Object.keys\\(m\\).slice\\(0,20\\)\\)\\).catch\\(err=>{console.error\\(err\\);process.exit\\(1\\)}\\)\")",
+      "Bash(npm test)",
+      "Bash(node -e \"import\\(''./src/data/projects.ts''\\).then\\(m=>console.log\\(Object.keys\\(m\\)\\)\\).catch\\(err=>{console.error\\(err\\);process.exit\\(1\\)}\\)\")",
+      "Bash(openspec list)",
+      "Bash(openspec list --specs)",
+      "Bash(openspec validate add-file-based-project-pages --strict --no-interactive)",
+      "Skill(executing-plans)",
+      "Skill(executing-plans:*)",
+      "Bash(if exist \"c:\\\\Users\\\\X1 Yoga\\\\Documents\\\\GitHub\\\\profolio\\\\src\\\\data\\\\projects.test.ts\" del \"c:\\\\Users\\\\X1 Yoga\\\\Documents\\\\GitHub\\\\profolio\\\\src\\\\data\\\\projects.test.ts\")",
+      "Bash(cmd /c del \"c:\\\\Users\\\\X1 Yoga\\\\Documents\\\\GitHub\\\\profolio\\\\src\\\\data\\\\projects.test.ts\")",
+      "Bash(npm run build)",
+      "Bash(cmd /c del \"c:\\\\Users\\\\X1 Yoga\\\\Documents\\\\GitHub\\\\profolio\\\\public\\\\projects\\\\FOCUS-EASY\\\\封面.svg\")",
+      "Bash(cmd /c del \"c:\\\\Users\\\\X1 Yoga\\\\Documents\\\\GitHub\\\\profolio\\\\public\\\\projects\\\\FOCUS-EASY\\\\1.svg\")",
+      "Bash(cmd /c del \"c:\\\\Users\\\\X1 Yoga\\\\Documents\\\\GitHub\\\\profolio\\\\public\\\\projects\\\\FOCUS-EASY\\\\project.pdf\")",
+      "Bash(git -C \"c:\\\\Users\\\\X1 Yoga\\\\Documents\\\\GitHub\\\\profolio\" status --short)",
+      "Bash(git -C \"c:\\\\Users\\\\X1 Yoga\\\\Documents\\\\GitHub\\\\profolio\" diff -- src/data/projects.ts src/app/projects/[slug]/page.tsx src/app/page.tsx src/components/project-card.tsx)",
+      "Bash(python -c \"import os, json; p=r''c:\\\\Users\\\\X1 Yoga\\\\Documents\\\\GitHub\\\\profolio\\\\public\\\\projects''; print\\(json.dumps\\(sorted\\([name for name in os.listdir\\(p\\) if os.path.isdir\\(os.path.join\\(p,name\\)\\)]\\), ensure_ascii=False\\)\\)\")",
+      "Bash(python -c \"from pathlib import Path; p=Path\\(r''c:\\\\Users\\\\X1 Yoga\\\\Documents\\\\GitHub\\\\profolio\\\\public\\\\projects''\\); import json; print\\(json.dumps\\({d.name: sorted\\([f.name for f in d.iterdir\\(\\)]\\) for d in p.iterdir\\(\\) if d.is_dir\\(\\)}, ensure_ascii=False, indent=2\\)\\)\")",
+      "Bash(npm --prefix \"c:\\\\Users\\\\X1 Yoga\\\\Documents\\\\GitHub\\\\profolio\" test)",
+      "Bash(python -c \"from pathlib import Path; p=Path\\(r''c:\\\\Users\\\\X1 Yoga\\\\Documents\\\\GitHub\\\\profolio\\\\src\\\\components\\\\project-card.tsx''\\); print\\(p.read_text\\(encoding=''utf-8''\\)\\)\")",
+      "Bash(npm --prefix \"c:\\\\Users\\\\X1 Yoga\\\\Documents\\\\GitHub\\\\profolio\" run build)",
+      "Bash(python -c \"from pathlib import Path; p=Path\\(r''c:\\\\Users\\\\X1 Yoga\\\\Documents\\\\GitHub\\\\profolio\\\\public\\\\projects''\\); print\\(''\\\\n''.join\\(sorted\\(d.name for d in p.iterdir\\(\\) if d.is_dir\\(\\)\\)\\)\\)\")",
+      "Bash(python -c \"from pathlib import Path; p=Path\\(r''c:\\\\Users\\\\X1 Yoga\\\\Documents\\\\GitHub\\\\profolio\\\\public\\\\projects\\\\ON HER WAY''\\); print\\([x.name for x in p.iterdir\\(\\)]\\)\")",
+      "Bash(node -e \"import\\(''./src/data/projects.ts''\\).then\\(\\({loadProjects}\\)=>{const p=loadProjects\\(\\).find\\(x=>x.slug===''ON HER WAY''\\); console.log\\(JSON.stringify\\(p,null,2\\)\\);}\\)\")",
+      "Bash(node -e \"import\\(''./src/data/projects.ts''\\).then\\(\\({getProjectBySlug}\\)=>{const p=getProjectBySlug\\(''ON HER WAY''\\); console.log\\(p.cover.image\\); console.log\\(JSON.stringify\\(p.galleryImages\\)\\);}\\)\")",
+      "Bash(python -)",
+      "Read(//c/c/Users/X1 Yoga/Documents/GitHub/profolio/**)",
+      "Bash(bash ~/.claude/skills/git-pushing/scripts/smart_commit.sh)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\X1 Yoga\\Documents\\GitHub\\profolio\\openspec\\changes\\add-file-based-project-pages\\specs",
+      "C:\\Users\\X1 Yoga\\Documents\\GitHub\\profolio\\src\\app\\introduce-mo"
+    ]
+  }
+}

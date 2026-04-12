@@ -1,23 +1,64 @@
-const links = [
-  { label: "Home", href: "#home" },
-  { label: "Works", href: "#works" },
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+type SiteHeaderProps = {
+  sectionLinks?: Array<{
+    label: string;
+    href: string;
+  }>;
+};
+
+const portfolioSectionLinks = [
+  { label: "Works", href: "/#works" },
+  { label: "Contact", href: "/#contact" },
 ];
 
-export function SiteHeader() {
+const introduceSectionLinks = [
+  { label: "Education", href: "/introduce-mo#education" },
+  { label: "Skill", href: "/introduce-mo#skill" },
+  { label: "Experience", href: "/introduce-mo#experience" },
+];
+
+function getTopLevelLinkClassName(isActive: boolean) {
+  return isActive
+    ? "rounded-full bg-black px-4 py-2 text-white transition-colors"
+    : "rounded-full px-4 py-2 text-black transition-opacity hover:opacity-55";
+}
+
+function getTopLevelLabelClassName(isActive: boolean, trackingClassName: string) {
+  return isActive ? `${trackingClassName} text-white` : trackingClassName;
+}
+
+export function SiteHeader({ sectionLinks }: SiteHeaderProps) {
+  const pathname = usePathname();
+  const isIntroducePage = pathname.startsWith("/introduce-mo");
+  const activeSectionLinks = sectionLinks ?? (isIntroducePage ? introduceSectionLinks : portfolioSectionLinks);
+
   return (
     <header className="sticky top-0 z-50 border-b border-black/10 bg-[rgba(247,244,238,0.88)] backdrop-blur-md">
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-5 md:px-10">
-        <a href="#home" className="text-xs font-medium uppercase tracking-[0.35em]">
-          Mo Portfolio
-        </a>
+        <div className="hidden items-center gap-3 md:flex">
+          <Link href="/" className={getTopLevelLinkClassName(!isIntroducePage)}>
+            <span className={getTopLevelLabelClassName(!isIntroducePage, "text-xs font-medium uppercase tracking-[0.35em]")}>Mo Portfolio</span>
+          </Link>
+          <Link href="/introduce-mo" className={getTopLevelLinkClassName(isIntroducePage)}>
+            <span className={getTopLevelLabelClassName(isIntroducePage, "text-xs uppercase tracking-[0.25em]")}>INTRODUCE MO</span>
+          </Link>
+        </div>
 
-        <nav className="hidden gap-8 text-xs uppercase tracking-[0.25em] md:flex">
-          {links.map((link) => (
-            <a key={link.href} href={link.href} className="transition-opacity hover:opacity-55">
+        <Link href={isIntroducePage ? "/introduce-mo" : "/"} className="md:hidden">
+          <span className="text-xs font-medium uppercase tracking-[0.35em]">
+            {isIntroducePage ? "INTRODUCE MO" : "Mo Portfolio"}
+          </span>
+        </Link>
+
+        <nav className="hidden items-center gap-3 text-xs uppercase tracking-[0.25em] md:flex">
+          {activeSectionLinks.map((link) => (
+            <Link key={link.href} href={link.href} className="rounded-full px-4 py-2 transition-opacity hover:opacity-55">
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
       </div>

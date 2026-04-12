@@ -1,0 +1,13 @@
+## 1. Implementation
+- [x] 1.1 Extend project content loading to extract a sortable year from `#项目标签（包括tag和日期）` and order homepage cards from newest to oldest
+- [x] 1.2 Update the shared header to use route-aware navigation for `/`, `/#works`, `/#contact`, and `/introduce-mo`
+- [x] 1.3 Add a file-based profile content contract under `public/profile/` using `个人简介.md` plus one folder per experience containing `工作经历.md`, an optional `展示图.*`, and an optional markdown PDF link
+- [x] 1.4 Add a profile data loader that parses `#name`, `#skill`, `#education1`, `#education2`, `#公司`, `#岗位/日期`, `#项目1介绍`, `#项目2介绍`, and optional `#PDF链接`
+- [x] 1.5 Add the `INTRODUCE MO` page scaffold that reuses the homepage intro treatment and renders skill, education, and experience sections as list/card components
+- [x] 1.6 Refine the project gallery to show one numbered image at a time with lightweight side controls, fullscreen preview, and wheel-based zoom
+- [x] 1.7 Remove the extra gallery instructional text while keeping the current image index and project detail layout intact
+- [x] 1.8 Add or update tests covering project ordering, header navigation, gallery interaction hooks, profile parsing, and profile-page scaffolding
+- [x] 1.9 Run validation tooling (`npm test`, `npm run build`, `openspec validate add-file-based-project-pages --strict --no-interactive`)
+- [x] 1.10 Keep `INTRODUCE MO` as a top-level header destination beside the portfolio title and align experience cards with the site's base palette without preview-image blocks
+- [x] 1.11 Reorder the profile overview to show education above skill, render structured education fields, add profile-specific section nav and active-state highlighting, and add dedicated experience detail pages
+- [x] 1.12 Replace text-only skill cards with unified circular PNG icons and keep sub-navigation links unhighlighted while preserving top-level active pills

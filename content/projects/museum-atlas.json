@@ -1,0 +1,45 @@
+{
+  "slug": "museum-atlas",
+  "title": "博物馆地形图",
+  "subtitle": "以连续坡道组织观看与学习的叙事线路",
+  "year": "2024",
+  "category": "建筑 / 文化",
+  "summary": "一个强调步行节奏的博物馆方案，把展览动线转化为地形般连续起伏的空间体验。",
+  "overview": "设计把传统楼层关系弱化为一条连续的坡道系统，参观者在上升过程中不断穿过不同尺度的展厅、中庭与休息平台。",
+  "cover": {
+    "label": "Museum",
+    "image": "/projects/museum-atlas/cover.svg",
+    "accent": "#e2ddd5"
+  },
+  "details": [
+    {
+      "title": "概念",
+      "body": "将地形的‘缓坡’转译为展览路径，让观看不再是离散房间的切换，而是一段连续发生的过程。"
+    },
+    {
+      "title": "结构与空间",
+      "body": "通过少量大跨度结构释放出完整的坡道空间，使不同展厅之间保持视觉联系。"
+    },
+    {
+      "title": "表达重点",
+      "body": "模型和版面均围绕‘连续性’展开，强调人在空间中移动时感知到的层层展开。"
+    }
+  ],
+  "gallery": [
+    {
+      "title": "连续坡道剖面",
+      "description": "剖面展示不同标高平台如何串联为完整参观路径。",
+      "image": "/projects/museum-atlas/gallery-01.svg"
+    },
+    {
+      "title": "中庭光线",
+      "description": "顶部引光强化行进过程中的方向感。",
+      "image": "/projects/museum-atlas/gallery-02.svg"
+    },
+    {
+      "title": "展陈停留节点",
+      "description": "在连续动线中插入若干停留节点，形成节奏变化。",
+      "image": "/projects/museum-atlas/gallery-03.svg"
+    }
+  ]
+}

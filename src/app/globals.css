@@ -49,9 +49,10 @@ img {
 
 .project-card__image {
   position: relative;
-  min-height: 52vh;
-  background-size: cover;
+  aspect-ratio: 842 / 595;
+  background-size: contain;
   background-position: center;
+  background-repeat: no-repeat;
   transition: transform 300ms ease;
 }
 
@@ -87,7 +88,6 @@ img {
 }
 
 @media (max-width: 768px) {
-  .project-card__image,
   .hero-image {
     min-height: 40vh;
   }

@@ -24,27 +24,16 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           {String(index + 1).padStart(2, "0")}
         </p>
 
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <p className="text-xs uppercase tracking-[0.28em] text-black/55">
-              {project.category} · {project.year}
-            </p>
-            <h2 className="text-3xl uppercase tracking-tight md:text-5xl">
-              {project.title}
-            </h2>
-            <p className="max-w-2xl text-base leading-7 text-black/70 md:text-lg">
-              {project.subtitle}
-            </p>
-          </div>
-
-          <p className="max-w-2xl text-sm leading-7 text-black/65 md:text-base">
-            {project.summary}
-          </p>
+        <div className="space-y-2">
+          <p className="text-xs uppercase tracking-[0.28em] text-black/55">{project.meta}</p>
+          <h2 className="text-3xl tracking-tight md:text-5xl">
+            {project.title}
+          </h2>
         </div>
 
         <div className="flex items-start md:justify-end">
           <Link
-            href={`/projects/${project.slug}`}
+            href={`/projects/${encodeURIComponent(project.slug)}`}
             className="inline-flex border border-black px-5 py-3 text-xs uppercase tracking-[0.28em] transition-colors hover:bg-black hover:text-[#f3efe8]"
           >
             查看项目

@@ -1,0 +1,40 @@
+{
+  "slug": "urban-field",
+  "title": "城市留白实验",
+  "subtitle": "在高密度街区中嵌入可停留的轻型景观系统",
+  "year": "2025",
+  "category": "城市 / 景观",
+  "summary": "通过模块化介入为街角与狭长边角地带建立新的停留方式，让日常路径中出现更多非目的性的停顿。",
+  "overview": "项目聚焦高密度街区中的被忽略空间，提出一套轻介入、可复制、可替换的景观单元。系统由座椅、遮阴、灯光和种植构成，可适应不同街角尺度。",
+  "cover": {
+    "label": "Field",
+    "image": "/projects/urban-field/cover.svg",
+    "accent": "#d9d9d1"
+  },
+  "details": [
+    {
+      "title": "问题识别",
+      "body": "很多城市缝隙空间虽具备停留潜力，但因缺乏基础设施与识别度而长期被忽视。"
+    },
+    {
+      "title": "方法",
+      "body": "从街道日常行为出发，将停留动作拆解为靠、坐、看、穿行四种状态，并转化为可组合的场景单元。"
+    },
+    {
+      "title": "结果",
+      "body": "方案以最低限度的结构介入提升了空间辨识度，也为社区活动提供了更柔性的发生条件。"
+    }
+  ],
+  "gallery": [
+    {
+      "title": "街角样机",
+      "description": "小尺度单元通过遮阴和坐凳增强停留性。",
+      "image": "/projects/urban-field/gallery-01.svg"
+    },
+    {
+      "title": "夜间使用场景",
+      "description": "低照度灯光让空间在晚间依旧具备可达性与安全感。",
+      "image": "/projects/urban-field/gallery-02.svg"
+    }
+  ]
+}

@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ProjectHero } from "@/components/project-hero";
+import { MarkdownRenderer } from "@/components/markdown-renderer";
+import { ProjectGallery } from "@/components/project-gallery";
 import { SiteHeader } from "@/components/site-header";
-import { getProjectBySlug, projects } from "@/data/projects";
+import { getProjectBySlug, getProjectSlugs } from "@/data/projects";
 
 type ProjectPageProps = {
   params: Promise<{ slug: string }>;
 };
 
 export async function generateStaticParams() {
-  return projects.map((project) => ({ slug: project.slug }));
+  return getProjectSlugs().map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
@@ -42,49 +43,57 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
       <main className="px-6 py-10 md:px-10 md:py-14">
         <div className="mx-auto max-w-7xl space-y-16">
-          <ProjectHero project={project} />
+          <ProjectGallery media={project.galleryMedia} />
+
+          <section className="grid gap-12 md:grid-cols-[0.75fr_1.3fr]">
+            <p className="text-xs uppercase tracking-[0.35em] text-black/45">Project</p>
+            <div className="space-y-3 text-left">
+              <h1 className="text-3xl tracking-tight md:text-5xl">{project.title}</h1>
+              <p className="text-xl leading-8 text-black/68 md:text-2xl">{project.subtitle}</p>
+            </div>
+          </section>
+
+          {project.website ? (
+            <section className="grid gap-12 border-t border-black/10 pt-12 md:grid-cols-[0.75fr_1.3fr]">
+              <p className="text-xs uppercase tracking-[0.35em] text-black/45">Website</p>
+              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <a
+                  href={project.website}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex border border-black px-5 py-3 text-xs uppercase tracking-[0.28em] transition-colors hover:bg-black hover:text-[#f3efe8]"
+                >
+                  访问项目网站
+                </a>
+                <a href={project.website} target="_blank" rel="noreferrer" className="text-sm text-black/60 underline-offset-4 hover:underline">
+                  {project.website}
+                </a>
+              </div>
+            </section>
+          ) : null}
 
           <section className="grid gap-12 border-t border-black/10 pt-12 md:grid-cols-[0.75fr_1.3fr]">
-            <p className="text-xs uppercase tracking-[0.35em] text-black/45">Project Story</p>
-            <div className="space-y-10">
-              {project.details.map((detail) => (
-                <article key={detail.title} className="grid gap-3 md:grid-cols-[180px_1fr] md:gap-8">
-                  <h2 className="text-sm uppercase tracking-[0.24em] text-black/58">
-                    {detail.title}
-                  </h2>
-                  <p className="text-base leading-8 text-black/72 md:text-lg">
-                    {detail.body}
-                  </p>
-                </article>
-              ))}
+            <p className="text-xs uppercase tracking-[0.35em] text-black/45">Introduction</p>
+            <div className="max-w-3xl text-base leading-8 text-black/72 md:text-lg">
+              <MarkdownRenderer content={project.introduction} />
             </div>
           </section>
 
-          <section className="space-y-6 border-t border-black/10 pt-12">
-            <div className="grid gap-4 md:grid-cols-[0.75fr_1.3fr]">
-              <p className="text-xs uppercase tracking-[0.35em] text-black/45">Gallery</p>
-              <p className="max-w-2xl text-base leading-8 text-black/72 md:text-lg">
-                以下内容用于模拟项目详情页的图像节奏。后续替换成你的总平、分析图、效果图或模型照片即可。
-              </p>
-            </div>
-
-            <div className="grid gap-6 md:grid-cols-2">
-              {project.gallery.map((item) => (
-                <figure key={item.title} className="space-y-4 border border-black/10 bg-[#f1ede6] p-4 md:p-5">
-                  <div
-                    className="detail-image"
-                    style={{
-                      backgroundImage: `linear-gradient(180deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.24)), url(${item.image})`,
-                    }}
-                  />
-                  <figcaption className="space-y-2">
-                    <h3 className="text-lg uppercase tracking-[0.06em]">{item.title}</h3>
-                    <p className="text-sm leading-7 text-black/65 md:text-base">{item.description}</p>
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
-          </section>
+          {project.pdf ? (
+            <section className="grid gap-12 border-t border-black/10 pt-12 md:grid-cols-[0.75fr_1.3fr]">
+              <p className="text-xs uppercase tracking-[0.35em] text-black/45">Document</p>
+              <div>
+                <a
+                  href={project.pdf}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex border border-black px-5 py-3 text-xs uppercase tracking-[0.28em] transition-colors hover:bg-black hover:text-[#f3efe8]"
+                >
+                  查看 PDF
+                </a>
+              </div>
+            </section>
+          ) : null}
         </div>
       </main>
     </div>
