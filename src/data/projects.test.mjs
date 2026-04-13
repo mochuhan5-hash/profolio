@@ -114,6 +114,12 @@ test("site header applies explicit white text styling to the active top-level la
   assert.ok(siteHeaderSource.includes("text-white"));
 });
 
+test("site header keeps top-level and section navigation visible on mobile", () => {
+  assert.ok(siteHeaderSource.includes('flex flex-wrap items-center gap-2 md:gap-3'));
+  assert.ok(siteHeaderSource.includes('nav className="flex flex-wrap items-center gap-2'));
+  assert.ok(!siteHeaderSource.includes('href={isIntroducePage ? "/introduce-mo" : "/"} className="md:hidden"'));
+});
+
 test("homepage mock intro content still lives in page.tsx", () => {
   assert.ok(homePageSource.includes("欢迎来到momo的空间。") || homePageSource.includes("Hi"));
 });
@@ -151,6 +157,12 @@ test("introduce-mo page scaffolds education above skill and renders skill icons 
   assert.ok(introduceMoPageSource.includes('src={icon.src}'));
 });
 
+test("introduce-mo skill icons fill their circular container without leaving a smaller inner box", () => {
+  assert.ok(introduceMoPageSource.includes('overflow-hidden rounded-full'));
+  assert.ok(introduceMoPageSource.includes('className="h-full w-full object-cover"'));
+  assert.ok(!introduceMoPageSource.includes('className="h-10 w-10 object-contain md:h-14 md:w-14"'));
+});
+
 test("introduce-mo experience cards stay lightweight and only show company, role/date, and project names", () => {
   assert.ok(!introduceMoPageSource.includes("experience.previewImage ?"));
   assert.ok(!introduceMoPageSource.includes("<MarkdownRenderer content={project}"));
@@ -171,8 +183,8 @@ test("profile data loader parses structured education fields, named experience s
   assert.ok(profileIntroSource.includes("degree:"));
   assert.ok(profileIntroSource.includes("year:"));
   assert.ok(profileIntroSource.includes("class"));
-  assert.ok(experienceSource.includes("#AI改写功能"));
-  assert.ok(experienceSource.includes("#AI阅读功能"));
+  assert.ok(experienceSource.includes("# AI改写功能") || experienceSource.includes("#AI改写功能"));
+  assert.ok(experienceSource.includes("# AI阅读功能") || experienceSource.includes("#AI阅读功能"));
   assert.ok(profile.education.length > 0);
   assert.ok(profile.education[0]?.school);
   assert.ok(profile.experiences[0]?.projectNames.length > 0);
@@ -180,11 +192,7 @@ test("profile data loader parses structured education fields, named experience s
   assert.ok(existsSync(path.join(skillIconsDirectory, `${profile.skillIcons[0]?.slug}.png`)));
 });
 
-test("project gallery uses side overlay controls, animated slide transitions, and zoom overlay", () => {
-  assert.ok(projectGallerySource.includes('aria-label="上一张"'));
-  assert.ok(projectGallerySource.includes('aria-label="下一张"'));
-  assert.ok(projectGallerySource.includes("absolute left-0"));
-  assert.ok(projectGallerySource.includes("absolute right-0"));
+test("project gallery keeps zoom preview behavior while using below-media controls", () => {
   assert.ok(projectGallerySource.includes("duration-700"));
   assert.ok(projectGallerySource.includes("setIsZoomed"));
   assert.ok(projectGallerySource.includes("fixed inset-0"));
@@ -203,13 +211,31 @@ test("project gallery supports mixed video and image media with autoplay and enl
   assert.ok(projectGallerySource.includes('aria-label="放大预览"'));
 });
 
-test("project data loader prioritizes project video before numbered images in gallery media", () => {
-  const focusEasyProject = getProjectBySlug("FOCUS-EASY");
+test("project gallery places page index and paging controls below the media frame", () => {
+  assert.ok(projectGallerySource.includes('className="space-y-6 border-t border-black/10 pt-12"'));
+  assert.ok(projectGallerySource.includes('className="mt-5 flex flex-col items-center gap-4"'));
+  assert.ok(projectGallerySource.includes('aria-label="上一项"'));
+  assert.ok(projectGallerySource.includes('aria-label="下一项"'));
+  assert.ok(projectGallerySource.includes("aspect-[16/10]"));
+  assert.ok(!projectGallerySource.includes('aria-label="上一张"'));
+  assert.ok(!projectGallerySource.includes('aria-label="下一张"'));
+});
+
+test("project gallery uses larger symbolic arrow labels instead of Prev and Next text", () => {
+  assert.ok(projectGallerySource.includes('text-3xl'));
+  assert.ok(projectGallerySource.includes('{"<"}'));
+  assert.ok(projectGallerySource.includes('{">"}'));
+  assert.ok(!projectGallerySource.includes(">Prev<"));
+  assert.ok(!projectGallerySource.includes(">Next<"));
+});
+
+test("project data loader prioritizes project video before numbered images in gallery media when a video exists", () => {
+  const onHerWayProject = getProjectBySlug("ON HER WAY");
 
   assert.ok(profileDataSource.length > 0);
-  assert.equal(focusEasyProject?.galleryMedia[0]?.type, "video");
-  assert.match(focusEasyProject?.galleryMedia[0]?.src ?? "", /%E8%A7%86%E9%A2%91\.mp4$/);
-  assert.ok((focusEasyProject?.galleryMedia.filter((item) => item.type === "image").length ?? 0) > 0);
+  assert.equal(onHerWayProject?.galleryMedia[0]?.type, "video");
+  assert.match(onHerWayProject?.galleryMedia[0]?.src ?? "", /%E8%A7%86%E9%A2%91\.mp4$/);
+  assert.ok((onHerWayProject?.galleryMedia.filter((item) => item.type === "image").length ?? 0) > 0);
 });
 
 test("project detail page passes mixed gallery media instead of image-only arrays", () => {
@@ -217,9 +243,12 @@ test("project detail page passes mixed gallery media instead of image-only array
   assert.ok(!projectPageSource.includes("<ProjectGallery images={project.galleryImages} />"));
 });
 
-test("markdown renderer supports ## subsection headings for experience detail pages", () => {
-  assert.ok(markdownRendererSource.includes('block.startsWith("##")'));
+test("markdown renderer supports nested # and ## headings with separate heading levels and paragraph blocks", () => {
+  assert.ok(markdownRendererSource.includes('block.startsWith("## ")'));
+  assert.ok(markdownRendererSource.includes('block.startsWith("# ")'));
+  assert.ok(markdownRendererSource.includes("<h2>"));
   assert.ok(markdownRendererSource.includes("<h3>"));
+  assert.ok(markdownRendererSource.includes('split(/\\n(?=# |## |- )/)'));
 });
 
 test("project card cover has rounded corners and floating hover shadow", () => {

@@ -68,46 +68,20 @@ export function ProjectGallery({ media }: ProjectGalleryProps) {
 
   return (
     <section className="space-y-6 border-t border-black/10 pt-12">
-      <div className="grid gap-4 md:grid-cols-[0.75fr_1.3fr]">
-        <div className="space-y-2">
-          <p className="text-xs uppercase tracking-[0.35em] text-black/45">{currentLabel}</p>
-        </div>
-      </div>
-
-      <div className="relative overflow-hidden rounded-[28px] border border-black/10 bg-[#f1ede6] px-14 py-5 md:px-20 md:py-6">
-        <button
-          type="button"
-          aria-label="上一张"
-          onClick={goPrevious}
-          disabled={!canGoPrevious}
-          className="absolute left-0 top-1/2 z-10 inline-flex h-full w-14 -translate-y-1/2 items-center justify-center text-xl text-black/45 transition-all duration-700 hover:text-black disabled:cursor-not-allowed disabled:opacity-20 md:w-20"
-        >
-          ‹
-        </button>
-
-        <button
-          type="button"
-          aria-label="下一张"
-          onClick={goNext}
-          disabled={!canGoNext}
-          className="absolute right-0 top-1/2 z-10 inline-flex h-full w-14 -translate-y-1/2 items-center justify-center text-xl text-black/45 transition-all duration-700 hover:text-black disabled:cursor-not-allowed disabled:opacity-20 md:w-20"
-        >
-          ›
-        </button>
-
+      <div className="relative overflow-hidden rounded-[28px] border border-black/10 bg-[#f1ede6] p-4 md:p-6">
         <button
           type="button"
           aria-label="放大预览"
           onClick={() => setIsZoomed(true)}
           className="block w-full cursor-zoom-in transition-transform duration-700 hover:scale-[1.01]"
         >
-          <div className="relative mx-auto w-full max-w-5xl transition-all duration-700 ease-out">
+          <div className="relative mx-auto aspect-[16/10] w-full max-w-5xl overflow-hidden rounded-[22px] bg-[#ece7de] transition-all duration-700 ease-out">
             {currentMedia.type === "video" ? (
               <video
                 key={currentMedia.src}
                 ref={inlineVideoRef}
                 src={currentMedia.src}
-                className="h-auto w-full object-contain"
+                className="h-full w-full object-cover"
                 autoPlay
                 muted
                 loop
@@ -118,15 +92,40 @@ export function ProjectGallery({ media }: ProjectGalleryProps) {
               <Image
                 src={currentMedia.src}
                 alt={currentAlt}
-                width={1600}
-                height={1200}
-                className="h-auto w-full object-contain"
+                fill
+                className="object-cover"
                 priority
                 unoptimized
               />
             )}
           </div>
         </button>
+
+        <div className="mt-5 flex flex-col items-center gap-4">
+          <p className="text-xs uppercase tracking-[0.35em] text-black/45">{currentLabel}</p>
+
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              aria-label="上一项"
+              onClick={goPrevious}
+              disabled={!canGoPrevious}
+              className="inline-flex min-w-20 items-center justify-center rounded-full border border-black/10 px-4 py-1 text-3xl leading-none text-black/60 transition-all duration-500 hover:border-black/30 hover:text-black disabled:cursor-not-allowed disabled:opacity-30"
+            >
+              {"<"}
+            </button>
+
+            <button
+              type="button"
+              aria-label="下一项"
+              onClick={goNext}
+              disabled={!canGoNext}
+              className="inline-flex min-w-20 items-center justify-center rounded-full border border-black/10 px-4 py-1 text-3xl leading-none text-black/60 transition-all duration-500 hover:border-black/30 hover:text-black disabled:cursor-not-allowed disabled:opacity-30"
+            >
+              {">"}
+            </button>
+          </div>
+        </div>
       </div>
 
       {isZoomed ? (

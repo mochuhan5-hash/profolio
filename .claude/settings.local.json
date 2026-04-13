@@ -38,7 +38,16 @@
       "Bash(node -e \"import\\(''./src/data/projects.ts''\\).then\\(\\({getProjectBySlug}\\)=>{const p=getProjectBySlug\\(''ON HER WAY''\\); console.log\\(p.cover.image\\); console.log\\(JSON.stringify\\(p.galleryImages\\)\\);}\\)\")",
       "Bash(python -)",
       "Read(//c/c/Users/X1 Yoga/Documents/GitHub/profolio/**)",
-      "Bash(bash ~/.claude/skills/git-pushing/scripts/smart_commit.sh)"
+      "Bash(bash ~/.claude/skills/git-pushing/scripts/smart_commit.sh)",
+      "Bash(git count-objects:*)",
+      "Bash(git rev-list:*)",
+      "Bash(git show:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(sort -k4 -nr)",
+      "Bash(git push:*)",
+      "Bash(node -e \"import\\('./src/data/projects.ts'\\).then\\(\\({ getProjectBySlug }\\) => { const project = getProjectBySlug\\('FOCUS-EASY'\\); console.log\\(JSON.stringify\\(project?.galleryMedia?.slice\\(0,3\\), null, 2\\)\\); }\\)\")",
+      "Bash(node -e \"import\\('node:fs'\\).then\\(fs=>{console.log\\(fs.readdirSync\\('public/projects/FOCUS-EASY'\\)\\);}\\)\")",
+      "Bash(git restore:*)"
     ],
     "additionalDirectories": [
       "C:\\Users\\X1 Yoga\\Documents\\GitHub\\profolio\\openspec\\changes\\add-file-based-project-pages\\specs",

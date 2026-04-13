@@ -2,22 +2,45 @@ type MarkdownRendererProps = {
   content: string;
 };
 
-function renderInlineMarkdown(text: string) {
+function escapeHtml(text: string) {
   return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function renderInlineMarkdown(text: string) {
+  return escapeHtml(text)
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/\*(.+?)\*/g, "<em>$1</em>");
 }
 
+function renderParagraphLines(lines: string[]) {
+  const content = lines
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => renderInlineMarkdown(line))
+    .join("<br />");
+
+  return content ? `<p>${content}</p>` : "";
+}
+
 function renderMarkdown(content: string) {
   return content
-    .split(/\n\s*\n/)
+    .split(/\n(?=# |## |- )/)
     .map((block) => block.trim())
     .filter(Boolean)
     .map((block) => {
-      if (block.startsWith("##")) {
+      if (block.startsWith("## ")) {
         const [heading, ...rest] = block.split("\n");
-        const body = rest.join("<br />");
-        return `<h3>${renderInlineMarkdown(heading.replace(/^##\s*/, "").trim())}</h3>${body ? `<p>${renderInlineMarkdown(body)}</p>` : ""}`;
+        return `<h3>${renderInlineMarkdown(heading.replace(/^##\s*/, "").trim())}</h3>${renderParagraphLines(rest)}`;
+      }
+
+      if (block.startsWith("# ")) {
+        const [heading, ...rest] = block.split("\n");
+        return `<h2>${renderInlineMarkdown(heading.replace(/^#\s*/, "").trim())}</h2>${renderParagraphLines(rest)}`;
       }
 
       if (block.startsWith("- ")) {
@@ -30,7 +53,7 @@ function renderMarkdown(content: string) {
         return `<ul>${items}</ul>`;
       }
 
-      return `<p>${renderInlineMarkdown(block.replace(/\n/g, "<br />"))}</p>`;
+      return renderParagraphLines(block.split("\n"));
     })
     .join("");
 }

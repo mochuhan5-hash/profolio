@@ -47,8 +47,8 @@ export default function IntroduceMoPage() {
             <div className="grid grid-cols-3 gap-4 sm:grid-cols-4 xl:grid-cols-6">
               {profile.skillIcons.map((icon) => (
                 <article key={icon.slug} className="flex items-center justify-center">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full border border-black/10 bg-[#f3efe8] shadow-sm md:h-24 md:w-24">
-                    <Image src={icon.src} alt={icon.label} width={72} height={72} className="h-10 w-10 object-contain md:h-14 md:w-14" unoptimized />
+                  <div className="h-20 w-20 overflow-hidden rounded-full border border-black/10 bg-[#f3efe8] shadow-sm md:h-24 md:w-24">
+                    <Image src={icon.src} alt={icon.label} width={96} height={96} className="h-full w-full object-cover" unoptimized />
                   </div>
                 </article>
               ))}
