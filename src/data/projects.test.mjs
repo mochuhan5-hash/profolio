@@ -216,9 +216,19 @@ test("project gallery places page index and paging controls below the media fram
   assert.ok(projectGallerySource.includes('className="mt-5 flex flex-col items-center gap-4"'));
   assert.ok(projectGallerySource.includes('aria-label="上一项"'));
   assert.ok(projectGallerySource.includes('aria-label="下一项"'));
-  assert.ok(projectGallerySource.includes("aspect-[16/10]"));
+  assert.ok(projectGallerySource.includes("max-w-5xl"));
   assert.ok(!projectGallerySource.includes('aria-label="上一张"'));
   assert.ok(!projectGallerySource.includes('aria-label="下一张"'));
+});
+
+test("project gallery keeps width fixed while allowing inline media height to auto-adapt", () => {
+  assert.ok(projectGallerySource.includes('className="relative mx-auto w-full max-w-5xl overflow-hidden rounded-[22px] bg-[#ece7de] transition-all duration-700 ease-out"'));
+  assert.ok(projectGallerySource.includes('className="h-auto w-full object-contain"'));
+  assert.ok(projectGallerySource.includes('width={1600}'));
+  assert.ok(projectGallerySource.includes('height={1200}'));
+  assert.ok(!projectGallerySource.includes('aspect-[16/10]'));
+  assert.ok(!projectGallerySource.includes('fill'));
+  assert.ok(!projectGallerySource.includes('object-cover'));
 });
 
 test("project gallery uses larger symbolic arrow labels instead of Prev and Next text", () => {

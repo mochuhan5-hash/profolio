@@ -75,13 +75,13 @@ export function ProjectGallery({ media }: ProjectGalleryProps) {
           onClick={() => setIsZoomed(true)}
           className="block w-full cursor-zoom-in transition-transform duration-700 hover:scale-[1.01]"
         >
-          <div className="relative mx-auto aspect-[16/10] w-full max-w-5xl overflow-hidden rounded-[22px] bg-[#ece7de] transition-all duration-700 ease-out">
+          <div className="relative mx-auto w-full max-w-5xl overflow-hidden rounded-[22px] bg-[#ece7de] transition-all duration-700 ease-out">
             {currentMedia.type === "video" ? (
               <video
                 key={currentMedia.src}
                 ref={inlineVideoRef}
                 src={currentMedia.src}
-                className="h-full w-full object-cover"
+                className="h-auto w-full object-contain"
                 autoPlay
                 muted
                 loop
@@ -92,8 +92,9 @@ export function ProjectGallery({ media }: ProjectGalleryProps) {
               <Image
                 src={currentMedia.src}
                 alt={currentAlt}
-                fill
-                className="object-cover"
+                width={1600}
+                height={1200}
+                className="h-auto w-full object-contain"
                 priority
                 unoptimized
               />
