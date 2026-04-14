@@ -47,7 +47,12 @@
       "Bash(git push:*)",
       "Bash(node -e \"import\\('./src/data/projects.ts'\\).then\\(\\({ getProjectBySlug }\\) => { const project = getProjectBySlug\\('FOCUS-EASY'\\); console.log\\(JSON.stringify\\(project?.galleryMedia?.slice\\(0,3\\), null, 2\\)\\); }\\)\")",
       "Bash(node -e \"import\\('node:fs'\\).then\\(fs=>{console.log\\(fs.readdirSync\\('public/projects/FOCUS-EASY'\\)\\);}\\)\")",
-      "Bash(git restore:*)"
+      "Bash(git restore:*)",
+      "Bash(npm run:*)",
+      "Bash(curl -I \"http://127.0.0.1:3001/projects/FOCUS-EASY\")",
+      "Bash(curl -i \"http://127.0.0.1:3001/projects/FOCUS-EASY\")",
+      "Bash(curl -i \"http://127.0.0.1:3010/projects/FOCUS-EASY\")",
+      "Bash(taskkill //PID 44000 //F)"
     ],
     "additionalDirectories": [
       "C:\\Users\\X1 Yoga\\Documents\\GitHub\\profolio\\openspec\\changes\\add-file-based-project-pages\\specs",

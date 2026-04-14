@@ -1,23 +1,69 @@
 "use client";
 
 import Image from "next/image";
-import { type WheelEvent, useEffect, useMemo, useRef, useState } from "react";
+import { type PointerEvent, type WheelEvent, useEffect, useMemo, useRef, useState } from "react";
 import type { ProjectGalleryMedia } from "@/data/projects";
 
 type ProjectGalleryProps = {
   media: ProjectGalleryMedia[];
 };
 
+type ZoomOffset = {
+  x: number;
+  y: number;
+};
+
+type PanState = {
+  pointerId: number;
+  startX: number;
+  startY: number;
+  originX: number;
+  originY: number;
+};
+
+const minZoomScale = 1;
+const maxZoomScale = 3;
+const zoomStep = 0.2;
+const defaultZoomOffset: ZoomOffset = { x: 0, y: 0 };
+
 function getMediaLabel(index: number) {
   return String(index + 1).padStart(2, "0");
+}
+
+function clampZoomScale(scale: number) {
+  return Math.min(maxZoomScale, Math.max(minZoomScale, Number(scale.toFixed(2))));
+}
+
+function clampZoomOffset(
+  offset: ZoomOffset,
+  scale: number,
+  viewport: HTMLDivElement | null,
+  media: HTMLVideoElement | HTMLImageElement | null,
+) {
+  if (!viewport || !media || scale <= minZoomScale) {
+    return defaultZoomOffset;
+  }
+
+  const maxOffsetX = Math.max(0, (media.clientWidth * scale - viewport.clientWidth) / 2);
+  const maxOffsetY = Math.max(0, (media.clientHeight * scale - viewport.clientHeight) / 2);
+
+  return {
+    x: Math.min(maxOffsetX, Math.max(-maxOffsetX, offset.x)),
+    y: Math.min(maxOffsetY, Math.max(-maxOffsetY, offset.y)),
+  };
 }
 
 export function ProjectGallery({ media }: ProjectGalleryProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
-  const [zoomScale, setZoomScale] = useState(1);
+  const [zoomScale, setZoomScale] = useState(minZoomScale);
+  const [zoomOffset, setZoomOffset] = useState<ZoomOffset>(defaultZoomOffset);
+  const [isPanning, setIsPanning] = useState(false);
   const inlineVideoRef = useRef<HTMLVideoElement | null>(null);
   const zoomedVideoRef = useRef<HTMLVideoElement | null>(null);
+  const zoomedMediaRef = useRef<HTMLVideoElement | HTMLImageElement | null>(null);
+  const zoomViewportRef = useRef<HTMLDivElement | null>(null);
+  const panStateRef = useRef<PanState | null>(null);
 
   if (media.length === 0) {
     return null;
@@ -43,7 +89,10 @@ export function ProjectGallery({ media }: ProjectGalleryProps) {
   };
 
   useEffect(() => {
-    setZoomScale(1);
+    setZoomScale(minZoomScale);
+    setZoomOffset(defaultZoomOffset);
+    setIsPanning(false);
+    panStateRef.current = null;
   }, [currentIndex, isZoomed]);
 
   useEffect(() => {
@@ -60,11 +109,96 @@ export function ProjectGallery({ media }: ProjectGalleryProps) {
 
   const handleWheelZoom = (event: WheelEvent<HTMLDivElement>) => {
     event.preventDefault();
+
+    const viewport = zoomViewportRef.current;
+
+    if (!viewport) {
+      return;
+    }
+
+    const viewportRect = viewport.getBoundingClientRect();
+    const pointerX = event.clientX - viewportRect.left - viewportRect.width / 2;
+    const pointerY = event.clientY - viewportRect.top - viewportRect.height / 2;
+
     setZoomScale((scale) => {
-      const nextScale = event.deltaY < 0 ? scale + 0.2 : scale - 0.2;
-      return Math.min(3, Math.max(1, Number(nextScale.toFixed(2))));
+      const nextScale = clampZoomScale(scale + (event.deltaY < 0 ? zoomStep : -zoomStep));
+
+      if (nextScale === scale) {
+        return scale;
+      }
+
+      setZoomOffset((offset) => {
+        if (nextScale === minZoomScale) {
+          return defaultZoomOffset;
+        }
+
+        const scaleRatio = nextScale / scale;
+        const nextOffset = {
+          x: pointerX - (pointerX - offset.x) * scaleRatio,
+          y: pointerY - (pointerY - offset.y) * scaleRatio,
+        };
+
+        return clampZoomOffset(nextOffset, nextScale, viewport, zoomedMediaRef.current);
+      });
+
+      return nextScale;
     });
   };
+
+  const handlePanStart = (event: PointerEvent<HTMLDivElement>) => {
+    if (zoomScale <= minZoomScale) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    panStateRef.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      originX: zoomOffset.x,
+      originY: zoomOffset.y,
+    };
+
+    event.currentTarget.setPointerCapture(event.pointerId);
+    setIsPanning(true);
+  };
+
+  const handlePanMove = (event: PointerEvent<HTMLDivElement>) => {
+    const panState = panStateRef.current;
+
+    if (!panState || panState.pointerId !== event.pointerId) {
+      return;
+    }
+
+    event.preventDefault();
+
+    const nextOffset = {
+      x: panState.originX + event.clientX - panState.startX,
+      y: panState.originY + event.clientY - panState.startY,
+    };
+
+    setZoomOffset(clampZoomOffset(nextOffset, zoomScale, zoomViewportRef.current, zoomedMediaRef.current));
+  };
+
+  const handlePanEnd = (event: PointerEvent<HTMLDivElement>) => {
+    const panState = panStateRef.current;
+
+    if (!panState || panState.pointerId !== event.pointerId) {
+      return;
+    }
+
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+
+    panStateRef.current = null;
+    setIsPanning(false);
+  };
+
+  const zoomedMediaTransform = `translate3d(${zoomOffset.x}px, ${zoomOffset.y}px, 0) scale(${zoomScale})`;
+  const zoomViewportCursorClassName = isPanning ? "cursor-grabbing" : zoomScale > minZoomScale ? "cursor-grab" : "cursor-default";
 
   return (
     <section className="space-y-6 border-t border-black/10 pt-12">
@@ -143,17 +277,25 @@ export function ProjectGallery({ media }: ProjectGalleryProps) {
             ×
           </button>
           <div
-            className="relative max-h-full max-w-6xl overflow-auto"
+            ref={zoomViewportRef}
+            className={`relative max-h-[88vh] w-full max-w-6xl overflow-hidden ${zoomViewportCursorClassName}`}
             onClick={(event) => event.stopPropagation()}
             onWheel={handleWheelZoom}
+            onPointerDown={handlePanStart}
+            onPointerMove={handlePanMove}
+            onPointerUp={handlePanEnd}
+            onPointerCancel={handlePanEnd}
           >
             {currentMedia.type === "video" ? (
               <video
                 key={`${currentMedia.src}-zoomed`}
-                ref={zoomedVideoRef}
+                ref={(node) => {
+                  zoomedVideoRef.current = node;
+                  zoomedMediaRef.current = node;
+                }}
                 src={currentMedia.src}
-                className="max-h-[88vh] h-auto w-auto origin-center object-contain transition-transform duration-300"
-                style={{ transform: `scale(${zoomScale})` }}
+                className="max-h-[88vh] h-auto w-auto select-none object-contain transition-transform duration-150"
+                style={{ transform: zoomedMediaTransform, transformOrigin: "center center" }}
                 autoPlay
                 muted
                 loop
@@ -161,14 +303,15 @@ export function ProjectGallery({ media }: ProjectGalleryProps) {
                 controls
               />
             ) : (
-              <Image
+              <img
+                ref={(node) => {
+                  zoomedMediaRef.current = node;
+                }}
                 src={currentMedia.src}
                 alt={`Zoomed ${currentAlt}`}
-                width={2200}
-                height={1600}
-                className="max-h-[88vh] h-auto w-auto origin-center object-contain transition-transform duration-300"
-                style={{ transform: `scale(${zoomScale})` }}
-                unoptimized
+                className="max-h-[88vh] h-auto w-auto select-none object-contain transition-transform duration-150"
+                style={{ transform: zoomedMediaTransform, transformOrigin: "center center" }}
+                draggable={false}
               />
             )}
           </div>

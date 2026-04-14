@@ -198,6 +198,13 @@ test("project gallery keeps zoom preview behavior while using below-media contro
   assert.ok(projectGallerySource.includes("fixed inset-0"));
   assert.ok(projectGallerySource.includes("zoomScale"));
   assert.ok(projectGallerySource.includes("onWheel={handleWheelZoom}"));
+  assert.ok(projectGallerySource.includes("onPointerDown={handlePanStart}"));
+  assert.ok(projectGallerySource.includes("onPointerMove={handlePanMove}"));
+  assert.ok(projectGallerySource.includes("onPointerUp={handlePanEnd}"));
+  assert.ok(projectGallerySource.includes("overflow-hidden"));
+  assert.ok(projectGallerySource.includes("cursor-grab"));
+  assert.ok(projectGallerySource.includes('transformOrigin: "center center"'));
+  assert.ok(!projectGallerySource.includes('className="relative max-h-full max-w-6xl overflow-auto"'));
   assert.ok(!projectGallerySource.includes(">Gallery<"));
   assert.ok(!projectGallerySource.includes("点击图片可放大查看"));
 });
