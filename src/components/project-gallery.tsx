@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { type PointerEvent, type WheelEvent, useEffect, useMemo, useRef, useState } from "react";
+import { type MouseEvent, type PointerEvent, type WheelEvent, useEffect, useMemo, useRef, useState } from "react";
 import type { ProjectGalleryMedia } from "@/data/projects";
 
 type ProjectGalleryProps = {
@@ -22,7 +22,7 @@ type PanState = {
 };
 
 const minZoomScale = 1;
-const maxZoomScale = 3;
+const maxZoomScale = 5;
 const zoomStep = 0.2;
 const defaultZoomOffset: ZoomOffset = { x: 0, y: 0 };
 
@@ -88,6 +88,16 @@ export function ProjectGallery({ media }: ProjectGalleryProps) {
     setCurrentIndex((index) => index + 1);
   };
 
+  const handleZoomedPrevious = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    goPrevious();
+  };
+
+  const handleZoomedNext = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    goNext();
+  };
+
   useEffect(() => {
     setZoomScale(minZoomScale);
     setZoomOffset(defaultZoomOffset);
@@ -106,6 +116,38 @@ export function ProjectGallery({ media }: ProjectGalleryProps) {
       zoomedVideoRef.current?.play().catch(() => undefined);
     }
   }, [currentMedia, isZoomed]);
+
+  useEffect(() => {
+    if (!isZoomed) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "<" || event.key === ",") {
+        if (!canGoPrevious) {
+          return;
+        }
+
+        event.preventDefault();
+        goPrevious();
+      }
+
+      if (event.key === ">" || event.key === ".") {
+        if (!canGoNext) {
+          return;
+        }
+
+        event.preventDefault();
+        goNext();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [canGoNext, canGoPrevious, goNext, goPrevious, isZoomed]);
 
   const handleWheelZoom = (event: WheelEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -265,20 +307,41 @@ export function ProjectGallery({ media }: ProjectGalleryProps) {
 
       {isZoomed ? (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-black/78 p-6"
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-black/78"
           onClick={() => setIsZoomed(false)}
         >
           <button
             type="button"
             aria-label="关闭预览"
             onClick={() => setIsZoomed(false)}
-            className="absolute right-6 top-6 text-3xl text-white/80 transition-opacity hover:opacity-60"
+            className="absolute right-6 top-6 z-20 text-3xl text-white/80 transition-opacity hover:opacity-60"
           >
             ×
           </button>
+
+          <button
+            type="button"
+            aria-label="预览上一项"
+            onClick={handleZoomedPrevious}
+            disabled={!canGoPrevious}
+            className="absolute left-6 top-1/2 z-20 inline-flex h-16 w-16 -translate-y-1/2 items-center justify-center rounded-full bg-black/35 text-5xl leading-none text-white/75 transition-colors hover:bg-black/50 hover:text-white disabled:cursor-not-allowed disabled:opacity-20"
+          >
+            {"<"}
+          </button>
+
+          <button
+            type="button"
+            aria-label="预览下一项"
+            onClick={handleZoomedNext}
+            disabled={!canGoNext}
+            className="absolute right-6 top-1/2 z-20 inline-flex h-16 w-16 -translate-y-1/2 items-center justify-center rounded-full bg-black/35 text-5xl leading-none text-white/75 transition-colors hover:bg-black/50 hover:text-white disabled:cursor-not-allowed disabled:opacity-20"
+          >
+            {">"}
+          </button>
+
           <div
             ref={zoomViewportRef}
-            className={`relative max-h-[88vh] w-full max-w-6xl overflow-hidden ${zoomViewportCursorClassName}`}
+            className={`flex h-full w-full items-center justify-center overflow-hidden p-6 ${zoomViewportCursorClassName}`}
             onClick={(event) => event.stopPropagation()}
             onWheel={handleWheelZoom}
             onPointerDown={handlePanStart}
@@ -294,7 +357,7 @@ export function ProjectGallery({ media }: ProjectGalleryProps) {
                   zoomedMediaRef.current = node;
                 }}
                 src={currentMedia.src}
-                className="max-h-[88vh] h-auto w-auto select-none object-contain transition-transform duration-150"
+                className="h-auto w-auto max-w-none select-none object-contain transition-transform duration-150"
                 style={{ transform: zoomedMediaTransform, transformOrigin: "center center" }}
                 autoPlay
                 muted
@@ -309,7 +372,7 @@ export function ProjectGallery({ media }: ProjectGalleryProps) {
                 }}
                 src={currentMedia.src}
                 alt={`Zoomed ${currentAlt}`}
-                className="max-h-[88vh] h-auto w-auto select-none object-contain transition-transform duration-150"
+                className="h-auto w-auto max-w-none select-none object-contain transition-transform duration-150"
                 style={{ transform: zoomedMediaTransform, transformOrigin: "center center" }}
                 draggable={false}
               />

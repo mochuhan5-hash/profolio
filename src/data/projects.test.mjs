@@ -218,6 +218,24 @@ test("project gallery supports mixed video and image media with autoplay and enl
   assert.ok(projectGallerySource.includes('aria-label="放大预览"'));
 });
 
+test("project gallery zoom preview removes fixed frame limits and adds overlay navigation with larger zoom range", () => {
+  assert.ok(projectGallerySource.includes('aria-label="预览上一项"'));
+  assert.ok(projectGallerySource.includes('aria-label="预览下一项"'));
+  assert.ok(projectGallerySource.includes('className={`flex h-full w-full items-center justify-center overflow-hidden p-6 ${zoomViewportCursorClassName}`}'));
+  assert.ok(projectGallerySource.includes("const maxZoomScale = 5"));
+  assert.ok(!projectGallerySource.includes("max-w-6xl"));
+  assert.ok(!projectGallerySource.includes("max-h-[88vh]"));
+});
+
+test("project gallery overlay navigation adds translucent button backgrounds and keyboard switching while zoomed", () => {
+  assert.ok(projectGallerySource.includes("bg-black/35"));
+  assert.ok(projectGallerySource.includes('window.addEventListener("keydown", handleKeyDown)'));
+  assert.ok(projectGallerySource.includes('event.key === "<"'));
+  assert.ok(projectGallerySource.includes('event.key === ","'));
+  assert.ok(projectGallerySource.includes('event.key === ">"'));
+  assert.ok(projectGallerySource.includes('event.key === "."'));
+});
+
 test("project gallery places page index and paging controls below the media frame", () => {
   assert.ok(projectGallerySource.includes('className="space-y-6 border-t border-black/10 pt-12"'));
   assert.ok(projectGallerySource.includes('className="mt-5 flex flex-col items-center gap-4"'));
